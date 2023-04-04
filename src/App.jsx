@@ -1,19 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
-import { Link, Navigate, Route } from 'react-router-dom'
+import {Navigate} from 'react-router-dom'
+import { supabase } from './helpers/supabaseClient'
 
 function App() {
+  const [session, setSession] = useState(); // <-- initially undefined
 
-  const session=true
+  useEffect(() => {
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        setSession(session); // <-- set either null/user object
+      });
 
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session); // <-- set either null/user object
+    });
+  }, []);
+  
+  if (session === undefined) {
+    return null; // or loading indicator/spinner/etc
+  }
 
   return (
     <div className="">
-      {session ? <Navigate to="/home"></Navigate> : <Navigate to="/account"></Navigate>}
+      <Navigate to={session.access_token ? "/home" : "/account"} replace />
     </div>
-  )
+  );
 }
-
 export default App

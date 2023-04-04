@@ -2,6 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import {BiSupport} from 'react-icons/bi'
 import {CgProfile} from 'react-icons/cg'
+import { Navigate } from 'react-router-dom'
 
 export const Navbar = () => {
   return (
@@ -17,7 +18,7 @@ export const Navbar = () => {
 
         <div className='flex items-center gap-5'>
           <motion.button whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }} className='flex items-center gap-1 text-lg'><BiSupport/> Support</motion.button>
-          <motion.button whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }} className='flex items-center gap-1 text-lg'><CgProfile/> Profile</motion.button>
+          <a href="/account"><motion.button whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }} className='flex items-center gap-1 text-lg'><CgProfile/> Profile</motion.button></a>
         </div>
       </div>
     </div>
