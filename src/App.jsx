@@ -4,27 +4,31 @@ import {Navigate} from 'react-router-dom'
 import { supabase } from './helpers/supabaseClient'
 
 function App() {
-  const [session, setSession] = useState(); // <-- initially undefined
+
+  const [session, setSession] = useState()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getSession()
-      .then(({ data: { session } }) => {
-        setSession(session); // <-- set either null/user object
-      });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(()=>{return session==null?null:session})
+      console.log(session);
+    })
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session); // <-- set either null/user object
-    });
-  }, []);
+      setSession(session)
+      console.log(session);
+    })
+    
+    console.log(session);
+  }, [])
   
-  if (session === undefined) {
-    return null; // or loading indicator/spinner/etc
-  }
 
   return (
     <div className="">
-      <Navigate to={session.access_token ? "/home" : "/account"} replace />
+      {session===undefined?<></>:(session===null ? <Navigate to="/account"></Navigate> : <Navigate to="/home"></Navigate>)}
+      {/* {true ? <Navigate to="/home"></Navigate> : <Navigate to="/account"></Navigate>} */}
     </div>
-  );
+  )
 }
+
 export default App

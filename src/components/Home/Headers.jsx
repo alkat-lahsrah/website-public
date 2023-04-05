@@ -1,14 +1,15 @@
 import React from 'react'
 import {RxCopy} from 'react-icons/rx'
+import { ModalPopup } from './ModalPopup'
 
-export const Headers = () => {
+export const Headers = (props) => {
   return (
     <div className='max-w-[1700px] rounded-sm bg-white w-screen'>
         <div className='flex justify-between items-center m-10'>
             {/* left */}
             <div className='flex flex-col'>
-                <p className='text-4xl py-2'>NAME</p>
-                <p className='text-xl py-2'>Partner id: PARTNER ID</p>
+                <p className='text-4xl py-2'>{props.name||"NAME"}</p>
+                <p className='text-xl py-2'>Partner id: {props.id||"PARTNER ID"}</p>
             </div>
 
             {/* right */}
@@ -21,7 +22,7 @@ export const Headers = () => {
                     </button>
                 </div>
                 <div className='flex items-end justify-end px-5 pt-4 gap-10 text-lg'>
-                    <button className='bg-blue-800 rounded text-white p-2 px-4'>Add Lead</button>
+                    <button className='bg-blue-800 rounded text-white p-2 px-4'><ModalPopup/></button>
                     <button className='p-2 px-4 rounded bg-gray-400'>Share link</button>
                 </div>
             </div>
