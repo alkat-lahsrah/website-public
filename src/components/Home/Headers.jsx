@@ -22,7 +22,7 @@ export const Headers = (props) => {
                     </button>
                 </div>
                 <div className='flex items-end justify-end px-5 pt-4 gap-10 text-lg'>
-                    <button className='bg-blue-800 rounded text-white p-2 px-4'><ModalPopup/></button>
+                    <button className='bg-blue-800 rounded text-white p-2 px-4'><ModalPopup session={props.session} key={props.key}/></button>
                     <button className='p-2 px-4 rounded bg-gray-400'>Share link</button>
                 </div>
             </div>

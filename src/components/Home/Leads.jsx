@@ -1,77 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTable } from "react-table";
+import { supabase } from "../../helpers/supabaseClient";
 
-export const Leads = () => {
-  const data = React.useMemo(
-    () => [
-      {
-        col1: "123",
-        col2: "John Doe",
-        col3: "Processing",
-        col4: "New York",
-        col5: "2021-10-10",
-      },
-      {
-        col1: "123",
-        col2: "John Doe",
-        col3: "Processing",
-        col4: "New York",
-        col5: "2021-10-10",
-      },
-      {
-        col1: "123",
-        col2: "John Doe",
-        col3: "Processing",
-        col4: "New York",
-        col5: "2021-10-10",
-      },
-      {
-        col1: "123",
-        col2: "John Doe",
-        col3: "Processing",
-        col4: "New York",
-        col5: "2021-10-10",
-      },
-      {
-        col1: "123",
-        col2: "John Doe",
-        col3: "Processing",
-        col4: "New York",
-        col5: "2021-10-10",
-      },
-      {
-        col1: "123",
-        col2: "John Doe",
-        col3: "Processing",
-        col4: "New York",
-        col5: "2021-10-10",
-      },
-    ],
+export const Leads = ({ session }) => {
 
-    []
-  );
+  const [data,setData]=useState([{}]);
+
+
+  useEffect(() => {
+    async function getLeads() {
+      const { user } = session;
+      console.log(session);
+
+      let { data, error } = await supabase
+        .from("leads")
+        .select("*")
+        .eq("user_id", user.id)
+
+      if (error) {
+        console.log(error);
+      } else if (data) {
+        setData(data);
+        console.log(data);
+      }
+    }
+    getLeads();
+  }, [session])
+
+  // const data = React.useMemo(
+  //   () => [
+  //     {
+  //       col1: "123",
+  //       col2: "John Doe",
+  //       col3: "Processing",
+  //       col4: "New York",
+  //       col5: "2021-10-10",
+  //     },
+  //   ],
+
+  //   []
+  // );
 
   const columns = React.useMemo(
     () => [
       {
         Header: "LEAD ID",
-        accessor: "col1", // accessor is the "key" in the data
+        accessor: "id", // accessor is the "key" in the data
       },
       {
         Header: "LEAD NAME",
-        accessor: "col2",
+        accessor: "name",
       },
       {
         Header: "STATUS",
-        accessor: "col3",
+        accessor: "status",
       },
       {
         Header: "LOCATION",
-        accessor: "col4",
+        accessor: "location_or_university",
       },
       {
         Header: "CREATED AT",
-        accessor: "col5",
+        accessor: "created_at",
       },
     ],
 
@@ -83,7 +73,7 @@ export const Leads = () => {
     tableInstance;
 
   return (
-    <div className="max-w-[1700px] rounded-sm bg-white w-screen">
+    <div className="max-w-[1700px] overflow-x-auto rounded-sm bg-white w-screen">
       <div className="flex flex-col justify-between m-10">
         {/* top */}
         <div className="flex">
@@ -92,7 +82,7 @@ export const Leads = () => {
 
         {/* bottom */}
         <div className="flex gap-5"></div>
-        <table {...getTableProps()} className="border-2">
+        <table className="border-2">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps}>

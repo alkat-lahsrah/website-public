@@ -39,9 +39,16 @@ export const HomeWithDataHandling = ({ session }) => {
 
   return (
     <div className="flex pt-[74px] h-screen gap-4 items-center overflow-scroll w-screen flex-col">
-      <Headers name={userName} id={session.user.id}/>
+      <Headers
+        name={userName}
+        session={session}
+        key={session.user.id}
+        id={session.user.id}
+      />
       <Insights />
-      <Leads />
+      <div className="">
+        <Leads session={session} key={session.user.id} />
+      </div>
       <Integrations />
     </div>
   );
