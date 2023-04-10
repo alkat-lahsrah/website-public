@@ -20,7 +20,7 @@ export const HomeWithDataHandling = ({ session }) => {
 
       let { data, error } = await supabase
         .from("profiles")
-        .select("full_name,ph_number,avatar_url")
+        .select("full_name,phone_number")
         .eq("id", user.id)
         .single();
       console.log(data);
@@ -29,8 +29,7 @@ export const HomeWithDataHandling = ({ session }) => {
         console.log(error);
       } else if (data) {
         setUserName(data.full_name);
-        setPhoneNumber(data.ph_number);
-        setAvatarUrl(data.avatar_url);
+        setPhoneNumber(data.phone_number);
       }
       setLoading(false);
     }
@@ -45,7 +44,7 @@ export const HomeWithDataHandling = ({ session }) => {
         key={session.user.id}
         id={session.user.id}
       />
-      <Insights />
+      <Insights session={session} key={session.user.id}/>
       <div className="">
         <Leads session={session} key={session.user.id} />
       </div>

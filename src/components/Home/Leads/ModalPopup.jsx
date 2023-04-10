@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import { supabase } from "../../helpers/supabaseClient";
+import { supabase } from "../../../helpers/supabaseClient";
 
 const customStyles = {
   content: {
@@ -17,11 +17,40 @@ export const ModalPopup = ({ session }) => {
   const [leadEmail, setLeadEmail] = React.useState("");
   const [leadName, setLeadName] = React.useState("");
   const [leadPhone, setLeadPhone] = React.useState("");
-  const [leadLocationOrUniversity, setLeadLocationOrUniversity] =
-    React.useState("");
+  const [services, setServices] = React.useState({
+    service1: {
+      used: false,
+      cost: 100,
+    },
+    service2: {
+      used: false,
+      cost: 200,
+    },
+    service3: {
+      used: false,
+      cost: 300,
+    },
+    service4: {
+      used: false,
+      cost: 400,
+    },
+  });
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  
+  const handleS1 = () => {
+    setServices({ ...services, service1: {...services.service1,used:!services.service1.used} });
+  }
+  const handleS2 = () => {
+    setServices({ ...services, service2: {...services.service2,used:!services.service2.used} });
+  }
+  const handleS3 = () => {
+    setServices({ ...services, service3: {...services.service3,used:!services.service3.used} });
+  }
+  const handleS4 = () => {
+    setServices({ ...services, service4: {...services.service4,used:!services.service4.used} });
+  }
 
   function openModal() {
     setIsOpen(true);
@@ -37,6 +66,7 @@ export const ModalPopup = ({ session }) => {
   }
 
   async function addLead() {
+    
     const { user } = session;
 
     const { data, error } = await supabase.from("leads").insert([
@@ -45,8 +75,7 @@ export const ModalPopup = ({ session }) => {
         name: leadName,
         email: leadEmail,
         phone_number: leadPhone,
-        location_or_university: leadLocationOrUniversity,
-        status: "Contacted",
+        services: JSON.parse(JSON.stringify(services)),
       },
     ]);
     if (error) {
@@ -54,6 +83,26 @@ export const ModalPopup = ({ session }) => {
     } else {
       console.log(data);
     }
+
+    setServices({
+      service1: {
+        used: false,
+        cost: 100,
+      },
+      service2: {
+        used: false,
+        cost: 200,
+      },
+      service3: {
+        used: false,
+        cost: 300,
+      },
+      service4: {
+        used: false,
+        cost: 400,
+      },
+    })
+
   }
 
   return (
@@ -127,20 +176,52 @@ export const ModalPopup = ({ session }) => {
             />
           </div>
           <div className="">
-            <label
-              htmlFor="location_or_university"
-              className="block uppercase tracking-wide text-gray-700 text-s font-bold mb-2"
-            >
-              Location or University
-            </label>
-            <input
-              type="text"
-              id="location_or_university"
-              placeholder={"Location or University"}
-              required
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              onChange={(e) => setLeadLocationOrUniversity(e.target.value)}
-            />
+            <div className="bg-white p-2 rounded-lg shadow-md border">
+              <div className="flex gap-2">
+                <input
+                  type="checkbox"
+                  name="status"
+                  id="status"
+                  value={services.service1.used}
+                  checked={services.service1.used}
+                  onChange={handleS1}
+                />
+                <span>Service 1</span>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="checkbox"
+                  name="status"
+                  id="status"
+                  value={services.service2.used}
+                  checked={services.service2.used}
+                  onChange={handleS2}
+                />
+                <span>Service 2</span>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="checkbox"
+                  name="status"
+                  id="status"
+                  value={services.service3.used}
+                  checked={services.service3.used}
+                  onChange={handleS3}
+                />
+                <span>Service 3</span>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="checkbox"
+                  name="status"
+                  id="status"
+                  value={services.service4.used}
+                  checked={services.service4.used}
+                  onChange={handleS4}
+                />
+                <span>Service 4</span>
+              </div>
+            </div>
           </div>
           <div className="flex flex-row-reverse justify-around items-center p-2">
             <button

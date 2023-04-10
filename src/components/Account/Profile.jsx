@@ -5,7 +5,6 @@ export const Profile = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(null);
-  const [avatarUrl, setAvatarUrl] = useState(null);
   const email = session?.user.email;
 
   useEffect(() => {
@@ -16,17 +15,22 @@ export const Profile = ({ session }) => {
 
       let { data, error } = await supabase
         .from("profiles")
-        .select("full_name,ph_number,avatar_url")
+        .select("full_name,phone_number")
         .eq("id", user.id)
         .single();
-      console.log(data);
 
       if (error) {
         console.log(error);
+        if(error.code==="PGRST116"){
+          updateProfile();
+        }
       } else if (data) {
         setUserName(data.full_name);
-        setPhoneNumber(data.ph_number);
-        setAvatarUrl(data.avatar_url);
+
+        setPhoneNumber(data.phone_number);
+        console.log(data)
+        console.log(phoneNumber);
+        console.log(userName);
       }
       setLoading(false);
     }
@@ -39,9 +43,7 @@ export const Profile = ({ session }) => {
     const updates = {
       id: user.id,
       full_name: userName,
-      avatar_url: avatarUrl,
-      ph_number: phoneNumber,
-      updated_at: new Date(),
+      phone_number: phoneNumber,
     };
 
     console.log(updates);
@@ -83,7 +85,12 @@ export const Profile = ({ session }) => {
           />
         </div>
         <div className="">
-          <label htmlFor="username" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Name</label>
+          <label
+            htmlFor="username"
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          >
+            Name
+          </label>
           <input
             type="text"
             id="username"
@@ -95,9 +102,14 @@ export const Profile = ({ session }) => {
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Phone Number</label>
+          <label
+            htmlFor="phone"
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          >
+            Phone Number
+          </label>
           <input
-            type="number"
+            type="text"
             id="phone_number"
             required
             value={phoneNumber || ""}
@@ -118,7 +130,10 @@ export const Profile = ({ session }) => {
 
         <div className="flex gap-10 justify-end pt-10">
           <a href="/home">
-            <button className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded" type="button">
+            <button
+              className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+              type="button"
+            >
               Go to Home
             </button>
           </a>
