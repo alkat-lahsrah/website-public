@@ -72,6 +72,7 @@ export const ModalPopup = ({ session }) => {
     const { data, error } = await supabase.from("leads").insert([
       {
         user_id: user.id,
+        creator_email: user.email,
         name: leadName,
         email: leadEmail,
         phone_number: leadPhone,

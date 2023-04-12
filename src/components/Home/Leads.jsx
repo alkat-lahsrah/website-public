@@ -4,6 +4,8 @@ import TimeAgo from "react-timeago";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFillFilterCircleFill } from "react-icons/bs";
 import Popup from "reactjs-popup";
+import { Services } from "./Leads/Services";
+import { UpdateLead } from "./Leads/UpdateLead";
 
 export const Leads = ({ session }) => {
   const [data, setData] = useState([{}]);
@@ -40,6 +42,12 @@ export const Leads = ({ session }) => {
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
+    closeTooltip();
+    //data is an array that has many leads each lead is an object that has name as string . return leads that have search as a substring of name
+    const filteredData = data.filter((lead) =>
+      lead.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setData1(filteredData);
   };
   const handleFilter1 = (e) => {
     setF1(!f1);
@@ -58,7 +66,6 @@ export const Leads = ({ session }) => {
   };
 
   const handleFilters = (e) => {
-    console.log([f1, f2, f3, f4, f5]);
     closeTooltip();
     const filteredData = data.filter((lead) => {
       console.log(lead.status);
@@ -90,9 +97,7 @@ export const Leads = ({ session }) => {
         }
       }
     });
-    console.log(filteredData);
     setData1(filteredData);
-    console.log(data1);
   };
 
   const handleClear = (e) => {
@@ -119,114 +124,131 @@ export const Leads = ({ session }) => {
             <tr>
               <th className="flex w-full justify-center items-center py-4 text-xl">
                 <p className="basis-[14.28%]">Lead ID</p>
-                <p className="basis-[14.28%] flex justify-center"><Popup
-                  trigger={
-                    <button className="flex gap-1 items-center">
-                      <AiOutlineSearch />
-                      <p>Lead Name</p>
-                    </button>
-                  }
-                  position="top center"
-                  className="bg-white"
-                >
-                  <div className="bg-white p-2 border">
-                    <input
-                      type="search"
-                      name=""
-                      id=""
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button onClick={handleSearch}>Submit</button>
-                  </div>
-                </Popup></p>
-                
-                <p className="basis-[14.28%] flex justify-center"><Popup
-                  ref={ref}
-                  trigger={
-                    <button className="flex gap-1 items-center">
-                      <BsFillFilterCircleFill></BsFillFilterCircleFill>
-                      <p>Status</p>
-                    </button>
-                  }
-                  position="top center"
-                  className="bg-white"
-                >
-                  <div className="bg-white p-2 rounded-lg shadow-md border">
-                    <div className="flex gap-2">
-                      <input
-                        type="checkbox"
-                        name="status"
-                        id="status"
-                        value={f1}
-                        checked={f1}
-                        onChange={handleFilter1}
-                      />
-                      <span>Contacted</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="checkbox"
-                        name="status"
-                        id="status"
-                        value={f2}
-                        checked={f2}
-                        onChange={handleFilter2}
-                      />
-                      <span>Awaiting response</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="checkbox"
-                        name="status"
-                        id="status"
-                        value={f3}
-                        checked={f3}
-                        onChange={handleFilter3}
-                      />
-                      <span>In process</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="checkbox"
-                        name="status"
-                        id="status"
-                        value={f4}
-                        checked={f4}
-                        onChange={handleFilter4}
-                      />
-                      <span>Booked</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="checkbox"
-                        name="status"
-                        id="status"
-                        value={f5}
-                        checked={f5}
-                        onChange={handleFilter5}
-                      />
-                      <span>Did not book</span>
-                    </div>
-                    <div className="flex justify-around">
-                      <button
-                        onClick={handleFilters}
-                        className="bg-blue-500 text-white rounded-md p-2"
-                      >
-                        Apply
+                <p className="basis-[14.28%] flex justify-center">
+                  <Popup
+                    trigger={
+                      <button className="flex gap-1 items-center">
+                        <AiOutlineSearch />
+                        <p>Lead Name</p>
                       </button>
+                    }
+                    position="top center"
+                    className="bg-white"
+                  >
+                    <div className="flex flex-col items-end gap-2 bg-white p-2 border">
+                      <input
+                        type="text"
+                        name=""
+                        id=""
+                        className="m-0 border active:border-0 p-2 border-black focus:border-0"
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
                       <button
-                        onClick={handleClear}
-                        className="bg-red-500 text-white rounded-md p-2"
+                        onClick={handleSearch}
+                        className="bg-green-500 p-2 px-5 text-white rounded "
                       >
-                        Clear
+                        Submit
                       </button>
                     </div>
-                  </div>
-                </Popup></p>
-                <p className="basis-[14.28%] justify-center items-center">Services taken</p>
-                <p className="basis-[14.28%] justify-center items-center">Total Cost</p>
-                <p className="basis-[14.28%] justify-center items-center">Your Commission 10% after successful transaction</p>
-                <p className="basis-[14.28%] justify-center items-center">Created At</p>
+                  </Popup>
+                </p>
+                <p className="basis-[14.28%] flex justify-center">
+                  <Popup
+                    ref={ref}
+                    trigger={
+                      <button className="flex gap-1 items-center">
+                        <BsFillFilterCircleFill></BsFillFilterCircleFill>
+                        <p>Status</p>
+                      </button>
+                    }
+                    position="top center"
+                    className="bg-white"
+                  >
+                    <div className="bg-white p-2 rounded-lg shadow-md border">
+                      <div className="flex gap-2">
+                        <input
+                          type="checkbox"
+                          name="status"
+                          id="status"
+                          value={f1}
+                          checked={f1}
+                          onChange={handleFilter1}
+                        />
+                        <span>Contacted</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="checkbox"
+                          name="status"
+                          id="status"
+                          value={f2}
+                          checked={f2}
+                          onChange={handleFilter2}
+                        />
+                        <span>Awaiting response</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="checkbox"
+                          name="status"
+                          id="status"
+                          value={f3}
+                          checked={f3}
+                          onChange={handleFilter3}
+                        />
+                        <span>In process</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="checkbox"
+                          name="status"
+                          id="status"
+                          value={f4}
+                          checked={f4}
+                          onChange={handleFilter4}
+                        />
+                        <span>Booked</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <input
+                          type="checkbox"
+                          name="status"
+                          id="status"
+                          value={f5}
+                          checked={f5}
+                          onChange={handleFilter5}
+                        />
+                        <span>Did not book</span>
+                      </div>
+                      <div className="flex justify-around">
+                        <button
+                          onClick={handleFilters}
+                          className="bg-blue-500 text-white rounded-md p-2"
+                        >
+                          Apply
+                        </button>
+                        <button
+                          onClick={handleClear}
+                          className="bg-red-500 text-white rounded-md p-2"
+                        >
+                          Clear
+                        </button>
+                      </div>
+                    </div>
+                  </Popup>
+                </p>
+                <p className="basis-[14.28%] justify-center items-center">
+                  Services taken
+                </p>
+                <p className="basis-[14.28%] justify-center items-center">
+                  Total Cost
+                </p>
+                <p className="basis-[14.28%] justify-center items-center">
+                  Your Commission 10% after successful transaction
+                </p>
+                <p className="basis-[14.28%] justify-center items-center">
+                  Created At
+                </p>
               </th>
             </tr>
           </thead>
@@ -236,7 +258,14 @@ export const Leads = ({ session }) => {
                 <tr>
                   <td className="flex w-full justify-evenly border items-center text-xl">
                     <p className="w-full basis-[14.28%] overflow-x-auto flex items-center py-2 justify-center self-center">
-                      <button onClick={() => {navigator.clipboard.writeText(lead.id)}} className="bg-gray-200 hover:shadow rounded-full p-2 px-3 shadow-xl active:shadow-lg active:bg-green-200">Click to copy</button>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(lead.id);
+                        }}
+                        className="bg-gray-200 hover:shadow rounded-full p-2 px-3 shadow-xl active:shadow-lg active:bg-green-200"
+                      >
+                        Click to copy
+                      </button>
                     </p>
                     <p className="w-full basis-[14.28%] overflow-x-auto flex items-center justify-center self-center">
                       <>{lead.name}</>
@@ -255,23 +284,7 @@ export const Leads = ({ session }) => {
                           })
                         : lead.status}
                     </p>
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex gap-2 p-3 flex-wrap items-center justify-center self-center">
-                      {/* lead.services is an object that has many services each service is an object that has used as boolean and cost as number return a service key if used is true*/}
-                      {typeof lead.services === "object"
-                        ? Object.keys(lead.services).map((key) => {
-                            if (lead.services[key].used === true) {
-                              //key is an object and i want to return its name not value so i have to replace the _ with space and capitalize the first letter
-                              key = key.replace(/_/g, " ");
-                              key = key.replace(key[0], key[0].toUpperCase());
-                              return (
-                                <p className="p-1 w-fit text-sm px-3 bg-gray-200 rounded-full shadow-lg">
-                                  {key}
-                                </p>
-                              );
-                            }
-                          })
-                        : lead.services}
-                    </p>
+                    <Services lead={lead} />
                     <p className="w-full basis-[14.28%] overflow-x-auto flex item-center justify-center self-center">
                       {
                         // lead.services is an object that has many services each service is an object that has used as boolean and cost as number return sum of all the costs where used is true
@@ -292,7 +305,7 @@ export const Leads = ({ session }) => {
                         typeof lead.services === "object"
                           ? Object.keys(lead.services).reduce((acc, key) => {
                               if (lead.services[key].used === true) {
-                                return acc + (lead.services[key].cost)/10;
+                                return acc + lead.services[key].cost / 10;
                               } else {
                                 return acc;
                               }
@@ -300,8 +313,12 @@ export const Leads = ({ session }) => {
                           : lead.services
                       }
                     </p>
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex item-center justify-center self-center">
+                    <p className="w-full basis-[14.28%] overflow-x-auto flex item-center justify-around self-center">
+                      <p></p>
                       <TimeAgo date={lead.created_at} />
+                      <p className="hover:bg-slate-200 p-2 rounded-full">
+                        <UpdateLead lead={lead} session={session}/>
+                      </p>
                     </p>
                   </td>
                 </tr>

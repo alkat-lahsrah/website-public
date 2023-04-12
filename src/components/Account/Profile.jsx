@@ -44,6 +44,7 @@ export const Profile = ({ session }) => {
       id: user.id,
       full_name: userName,
       phone_number: phoneNumber,
+      email: user.email
     };
 
     console.log(updates);
