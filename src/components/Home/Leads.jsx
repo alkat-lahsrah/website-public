@@ -317,7 +317,7 @@ export const Leads = ({ session }) => {
                       <p></p>
                       <TimeAgo date={lead.created_at} />
                       <p className="hover:bg-slate-200 p-2 rounded-full">
-                        <UpdateLead lead={lead} session={session}/>
+                        <UpdateLead lead={lead} session={session} />
                       </p>
                     </p>
                   </td>
