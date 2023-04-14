@@ -76,170 +76,160 @@ export const ProfileTable = ({ session }) => {
   };
 
   return (
-    <div className="w-screen">
-      <p className="p-5">Profile</p>
-      <table className="w-screen">
-        <thead>
-          <tr className="flex justify-evenly items-center border-t w-full">
-            <th className="w-full flex items-center justify-center">
-              <p>Index</p>
-            </th>
-            <th className="w-full flex items-center justify-center gap-1">
-              <Popup
-                ref={ref}
-                trigger={
-                  <div className="flex items-center justify-center gap-1">
-                    <p>Id</p>
-                    <AiOutlineSearch />
+    <div className="w-full border p-5 rounded-lg shadow-lg">
+      <p className="p-5 ">Total Profiles : {profilesData.length}</p>
+      <div className="rounded-lg shadow-xl p-5 border">
+        <table className=" table-auto w-full overflow-scroll">
+          <thead>
+            <tr className="">
+              <th className="border p-2">
+                <p>Index</p>
+              </th>
+              <th className="border p-2">
+                <Popup
+                  ref={ref}
+                  trigger={
+                    <div className="flex items-center justify-center gap-1">
+                      <p>Id</p>
+                      <AiOutlineSearch />
+                    </div>
+                  }
+                  position="right center"
+                  closeOnDocumentClick
+                >
+                  <div className="flex flex-col items-end gap-2 bg-white p-2 border">
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      className="m-0 border active:border-0 p-2 border-black focus:border-0"
+                      onChange={(e) => setSearchId(e.target.value)}
+                    />
+                    <button
+                      onClick={handleSearchId}
+                      className="bg-green-500 p-2 px-5 text-white rounded "
+                    >
+                      Submit
+                    </button>
                   </div>
-                }
-                position="right center"
-                closeOnDocumentClick
-              >
-                <div className="flex flex-col items-end gap-2 bg-white p-2 border">
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    className="m-0 border active:border-0 p-2 border-black focus:border-0"
-                    onChange={(e) => setSearchId(e.target.value)}
-                  />
-                  <button
-                    onClick={handleSearchId}
-                    className="bg-green-500 p-2 px-5 text-white rounded "
-                  >
-                    Submit
-                  </button>
-                </div>
-              </Popup>
-            </th>
-            <th className="w-full flex items-center justify-center gap-1">
-              <Popup
-                ref={ref}
-                trigger={
-                  <div className="flex items-center justify-center gap-1">
-                    <p>Full Name</p>
-                    <AiOutlineSearch />
+                </Popup>
+              </th>
+              <th className="border p-2">
+                <Popup
+                  ref={ref}
+                  trigger={
+                    <div className="flex items-center justify-center gap-1">
+                      <p>Full Name</p>
+                      <AiOutlineSearch />
+                    </div>
+                  }
+                  position="right center"
+                  closeOnDocumentClick
+                >
+                  <div className="flex flex-col items-end gap-2 bg-white p-2 border">
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      className="m-0 border active:border-0 p-2 border-black focus:border-0"
+                      onChange={(e) => setSearchName(e.target.value)}
+                    />
+                    <button
+                      onClick={handleSearchName}
+                      className="bg-green-500 p-2 px-5 text-white rounded "
+                    >
+                      Submit
+                    </button>
                   </div>
-                }
-                position="right center"
-                closeOnDocumentClick
-              >
-                <div className="flex flex-col items-end gap-2 bg-white p-2 border">
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    className="m-0 border active:border-0 p-2 border-black focus:border-0"
-                    onChange={(e) => setSearchName(e.target.value)}
-                  />
-                  <button
-                    onClick={handleSearchName}
-                    className="bg-green-500 p-2 px-5 text-white rounded "
-                  >
-                    Submit
-                  </button>
-                </div>
-              </Popup>
-            </th>
-            <th className="w-full flex items-center justify-center gap-1">
-              <Popup
-                ref={ref}
-                trigger={
-                  <div className="flex items-center justify-center gap-1">
-                    <p>Phone Number</p>
-                    <AiOutlineSearch />
+                </Popup>
+              </th>
+              <th className="border p-2">
+                <Popup
+                  ref={ref}
+                  trigger={
+                    <div className="flex items-center justify-center gap-1">
+                      <p>Phone Number</p>
+                      <AiOutlineSearch />
+                    </div>
+                  }
+                  position="right center"
+                  closeOnDocumentClick
+                >
+                  <div className="flex flex-col items-end gap-2 bg-white p-2 border">
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      className="m-0 border active:border-0 p-2 border-black focus:border-0"
+                      onChange={(e) => setSearchPhone(e.target.value)}
+                    />
+                    <button
+                      onClick={handleSearchPhone}
+                      className="bg-green-500 p-2 px-5 text-white rounded "
+                    >
+                      Submit
+                    </button>
                   </div>
-                }
-                position="right center"
-                closeOnDocumentClick
-              >
-                <div className="flex flex-col items-end gap-2 bg-white p-2 border">
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    className="m-0 border active:border-0 p-2 border-black focus:border-0"
-                    onChange={(e) => setSearchPhone(e.target.value)}
-                  />
-                  <button
-                    onClick={handleSearchPhone}
-                    className="bg-green-500 p-2 px-5 text-white rounded "
-                  >
-                    Submit
-                  </button>
-                </div>
-              </Popup>
-            </th>
-            <th className="w-full flex items-center justify-center gap-1">
-            <Popup
-                ref={ref}
-                trigger={
-                  <div className="flex items-center justify-center gap-1">
-                    <p>Email</p>
-                    <AiOutlineSearch />
+                </Popup>
+              </th>
+              <th className="border p-2">
+                <Popup
+                  ref={ref}
+                  trigger={
+                    <div className="flex items-center justify-center gap-1">
+                      <p>Email</p>
+                      <AiOutlineSearch />
+                    </div>
+                  }
+                  position="right center"
+                  closeOnDocumentClick
+                >
+                  <div className="flex flex-col items-end gap-2 bg-white p-2 border">
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      className="m-0 border active:border-0 p-2 border-black focus:border-0"
+                      onChange={(e) => setSearchEmail(e.target.value)}
+                    />
+                    <button
+                      onClick={handleSearchEmail}
+                      className="bg-green-500 p-2 px-5 text-white rounded "
+                    >
+                      Submit
+                    </button>
                   </div>
-                }
-                position="right center"
-                closeOnDocumentClick
-              >
-                <div className="flex flex-col items-end gap-2 bg-white p-2 border">
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    className="m-0 border active:border-0 p-2 border-black focus:border-0"
-                    onChange={(e) => setSearchEmail(e.target.value)}
-                  />
-                  <button
-                    onClick={handleSearchEmail}
-                    className="bg-green-500 p-2 px-5 text-white rounded "
-                  >
-                    Submit
-                  </button>
-                </div>
-              </Popup>
-            </th>
-            <th className="w-full flex items-center justify-center">
-              <p>Created At</p>
-            </th>
-            <th className="w-full flex items-center justify-center">
-              <p>Edit a column</p>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {profilesData.map((profile, index) => {
-            return (
-              <tr className="flex justify-evenly border-t items-center w-full">
-                <td className="w-full flex items-center justify-center">
-                  {index + 1}
-                </td>
-                <td className="w-full flex items-center justify-center">
-                  {profile.id}
-                </td>
-                <td className="w-full flex items-center justify-center">
-                  {profile.full_name || "Blank"}
-                </td>
-                <td className="w-full flex items-center justify-center">
+                </Popup>
+              </th>
+              <th className="border p-2">
+                <p>Created At</p>
+              </th>
+              <th className="border p-2">
+                <p>Edit a column</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {profilesData.map((profile, index) => (
+              <tr key={profile.id}>
+                <td className="border p-2">{index + 1}</td>
+                <td className="border p-2">{profile.id}</td>
+                <td className="border p-2">{profile.full_name || "Blank"}</td>
+                <td className="border p-2">
                   {profile.phone_number || "Blank"}
                 </td>
-                <td className="w-full flex items-center justify-center">
-                  {profile.email}
-                </td>
-                <td className="w-full flex items-center justify-center">
+                <td className="border p-2">{profile.email}</td>
+                <td className="border p-2">
                   <TimeAgo date={profile.created_at} />
                 </td>
-                <td className="w-full flex items-center justify-center">
-                  <div className="bg-gray-200 p-2 px-3 rounded-lg">
-                    <ProfilePopup profile={profile} />
-                  </div>
+                <td className="border p-2">
+                  <ProfilePopup profile={profile} />
                 </td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

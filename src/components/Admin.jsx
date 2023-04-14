@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "../helpers/supabaseClient";
 import { AdminPage } from "./Admin/AdminPage";
+import {LoadingScreen} from "./LoadingScreen";
 
 export const Admin = () => {
   const [session, setSession] = useState(undefined);
@@ -23,6 +24,6 @@ export const Admin = () => {
     
 
   return <div>
-    {session===undefined?<></>:(session===null ? <Navigate to="/account"></Navigate> : (session.user.role==="service_role"?<AdminPage session={session}/>:<Navigate to="/home"></Navigate>))}
+    {session===undefined?<LoadingScreen/>:(session===null ? <Navigate to="/account"></Navigate> : (session.user.role==="service_role"?<AdminPage session={session}/>:<Navigate to="/home"></Navigate>))}
   </div>;
 };

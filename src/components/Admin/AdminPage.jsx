@@ -22,7 +22,7 @@ export const AdminPage = ({ session }) => {
           Leads Section
         </button>
       </div>
-      <div>{profile ? <ProfileTable session={session} /> : <LeadTable session={session}/>}</div>
+      <div className="p-5">{profile ? <ProfileTable session={session} /> : <LeadTable session={session}/>}</div>
     </div>
   );
 };

@@ -37,7 +37,7 @@ export const ProfilePopup = ({ profile }) => {
 
   return (
     <div>
-      <button onClick={openModal}>Edit ?</button>
+      <button onClick={openModal} className="bg-slate-200 p-2 rounded-lg">Edit ?</button>
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}

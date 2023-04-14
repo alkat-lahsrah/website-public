@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import {Navigate} from 'react-router-dom'
 import { supabase } from './helpers/supabaseClient'
+import { LoadingScreen } from './components/LoadingScreen'
 
 function App() {
 
@@ -25,7 +26,7 @@ function App() {
 
   return (
     <div className="">
-      {session===undefined?<></>:(session===null ? <Navigate to="/account"></Navigate> : <Navigate to="/home"></Navigate>)}
+      {session===undefined?<LoadingScreen/>:(session===null ? <Navigate to="/account"></Navigate> : <Navigate to="/home"></Navigate>)}
       {/* {true ? <Navigate to="/home"></Navigate> : <Navigate to="/account"></Navigate>} */}
     </div>
   )
