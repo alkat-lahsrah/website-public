@@ -19,38 +19,65 @@ export const ModalPopup = ({ session }) => {
   const [leadPhone, setLeadPhone] = React.useState("");
   const [services, setServices] = React.useState({
     service1: {
+      desc: "Services and commission EdyouAsk- 500",
       used: false,
-      cost: 100,
+      cost: 500,
     },
     service2: {
+      desc: "EdyouPathfinder- 2000",
       used: false,
-      cost: 200,
+      cost: 2000,
     },
     service3: {
+      desc: "Edyoustrategy- 2000",
       used: false,
-      cost: 300,
+      cost: 2000,
     },
     service4: {
+      desc: "Edyoubullseye- 2000",
       used: false,
-      cost: 400,
+      cost: 2000,
+    },
+    service5: {
+      desc: "EdyouUnlimited- 5000",
+      used: false,
+      cost: 5000,
     },
   });
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  
+
   const handleS1 = () => {
-    setServices({ ...services, service1: {...services.service1,used:!services.service1.used} });
-  }
+    setServices({
+      ...services,
+      service1: { ...services.service1, used: !services.service1.used },
+    });
+  };
   const handleS2 = () => {
-    setServices({ ...services, service2: {...services.service2,used:!services.service2.used} });
-  }
+    setServices({
+      ...services,
+      service2: { ...services.service2, used: !services.service2.used },
+    });
+  };
   const handleS3 = () => {
-    setServices({ ...services, service3: {...services.service3,used:!services.service3.used} });
-  }
+    setServices({
+      ...services,
+      service3: { ...services.service3, used: !services.service3.used },
+    });
+  };
   const handleS4 = () => {
-    setServices({ ...services, service4: {...services.service4,used:!services.service4.used} });
-  }
+    setServices({
+      ...services,
+      service4: { ...services.service4, used: !services.service4.used },
+    });
+  };
+  const handleS5 = () => {
+    setServices({
+      ...services,
+      service5: { ...services.service5, used: !services.service5.used },
+    });
+  };
 
   function openModal() {
     setIsOpen(true);
@@ -66,7 +93,6 @@ export const ModalPopup = ({ session }) => {
   }
 
   async function addLead() {
-    
     const { user } = session;
 
     const { data, error } = await supabase.from("leads").insert([
@@ -82,28 +108,35 @@ export const ModalPopup = ({ session }) => {
     if (error) {
       console.log(error);
     } else {
-      console.log(data);
     }
 
     setServices({
       service1: {
+        desc: "Services and commission EdyouAsk- 500",
         used: false,
-        cost: 100,
+        cost: 500,
       },
       service2: {
+        desc: "EdyouPathfinder- 2000",
         used: false,
-        cost: 200,
+        cost: 2000,
       },
       service3: {
+        desc: "Edyoustrategy- 2000",
         used: false,
-        cost: 300,
+        cost: 2000,
       },
       service4: {
+        desc: "Edyoubullseye- 2000",
         used: false,
-        cost: 400,
+        cost: 2000,
       },
-    })
-
+      service5: {
+        desc: "EdyouUnlimited- 5000",
+        used: false,
+        cost: 5000,
+      },
+    });
   }
 
   return (
@@ -187,7 +220,7 @@ export const ModalPopup = ({ session }) => {
                   checked={services.service1.used}
                   onChange={handleS1}
                 />
-                <span>Service 1</span>
+                <span>Service 1 : Services and commission EdyouAsk- 500</span>
               </div>
               <div className="flex gap-2">
                 <input
@@ -198,7 +231,7 @@ export const ModalPopup = ({ session }) => {
                   checked={services.service2.used}
                   onChange={handleS2}
                 />
-                <span>Service 2</span>
+                <span>Service 2 : EdyouPathfinder- 2000</span>
               </div>
               <div className="flex gap-2">
                 <input
@@ -209,7 +242,7 @@ export const ModalPopup = ({ session }) => {
                   checked={services.service3.used}
                   onChange={handleS3}
                 />
-                <span>Service 3</span>
+                <span>Service 3 : Edyoustrategy- 2000</span>
               </div>
               <div className="flex gap-2">
                 <input
@@ -220,7 +253,18 @@ export const ModalPopup = ({ session }) => {
                   checked={services.service4.used}
                   onChange={handleS4}
                 />
-                <span>Service 4</span>
+                <span>Service 4 : Edyoubullseye- 2000</span>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="checkbox"
+                  name="status"
+                  id="status"
+                  value={services.service5.used}
+                  checked={services.service5.used}
+                  onChange={handleS5}
+                />
+                <span>Service 5 : EdyouUnlimited- 5000</span>
               </div>
             </div>
           </div>

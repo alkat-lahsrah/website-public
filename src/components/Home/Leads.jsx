@@ -22,7 +22,6 @@ export const Leads = ({ session }) => {
   useEffect(() => {
     async function getLeads() {
       const { user } = session;
-      console.log(session);
 
       let { data, error } = await supabase
         .from("leads")
@@ -32,9 +31,9 @@ export const Leads = ({ session }) => {
       if (error) {
         console.log(error);
       } else if (data) {
+        console.log(data);
         setData(data);
         setData1(data);
-        console.log(data);
       }
     }
     getLeads();
@@ -67,9 +66,8 @@ export const Leads = ({ session }) => {
 
   const handleFilters = (e) => {
     closeTooltip();
+    
     const filteredData = data.filter((lead) => {
-      console.log(lead.status);
-
       //code below is mot working as expected
       if (f1) {
         if (lead.status?.contacted === true) {
@@ -241,10 +239,10 @@ export const Leads = ({ session }) => {
                   Services taken
                 </p>
                 <p className="basis-[14.28%] justify-center items-center">
-                  Total Cost
+                  Total Commission
                 </p>
                 <p className="basis-[14.28%] justify-center items-center">
-                  Your Commission 10% after successful transaction
+                  Your Commission
                 </p>
                 <p className="basis-[14.28%] justify-center items-center">
                   Created At
@@ -316,9 +314,14 @@ export const Leads = ({ session }) => {
                     <p className="w-full basis-[14.28%] overflow-x-auto flex item-center justify-around self-center">
                       <p></p>
                       <TimeAgo date={lead.created_at} />
-                      <p className="hover:bg-slate-200 p-2 rounded-full">
-                        <UpdateLead lead={lead} session={session} />
-                      </p>
+                      {lead.status.booked === true ||
+                      lead.status.did_not_book === true ? (
+                        <p></p>
+                      ) : (
+                        <p className="hover:bg-slate-200 p-2 rounded-full">
+                          <UpdateLead lead={lead} session={session} />
+                        </p>
+                      )}
                     </p>
                   </td>
                 </tr>

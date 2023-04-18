@@ -16,7 +16,7 @@ export const Auth = () => {
       alert(error.error_description || error.message);
     } else {
       setRecieveOtp(true);
-      alert("Check your email for the login link!");
+      alert("Check your email for the OTP!");
     }
     setLoading(false);
   };
@@ -41,17 +41,22 @@ export const Auth = () => {
 
   return (
     <div className="flex flex-col gap-5 items-center justify-center h-screen text-xl">
-      <div className="flex gap-3 text-5xl font-bold">
+      <div className="flex text-3xl font-sans justify-center items-center">
+        {/* add logo */}
+        <img src="finalLogo.png" alt="" className="w-10" />
         <div className="flex">
-          <p className="text-orange-500">Ed</p>
-          <p className="text-green-400">you</p>
+          <p className="font-extrabold">edyou</p>
         </div>
-        <p>Partners</p>
+        <p>abroad</p>
       </div>
       {recieveOtp ? (
         <div className="">
-          <h1 className="mt-4 text-lg leading-7 text-gray-500 font-regular uppercase">Login with otp</h1>
-          <p className="block uppercase tracking-wide text-gray-700 text-base font-bold mb-2">Input otp</p>
+          <h1 className="mt-4 text-lg leading-7 text-gray-500 font-regular uppercase">
+            Login with otp
+          </h1>
+          <p className="block uppercase tracking-wide text-gray-700 text-base font-bold mb-2">
+            Input otp
+          </p>
           <form className="form-widget" onSubmit={handleOtp}>
             <div>
               <input
@@ -64,7 +69,10 @@ export const Auth = () => {
               />
             </div>
             <div>
-              <button className="shadow bg-green-600 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded" disabled={loading}>
+              <button
+                className="shadow bg-green-600 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+                disabled={loading}
+              >
                 {loading ? <span>Loading</span> : <span>Submit</span>}
               </button>
             </div>
@@ -90,7 +98,10 @@ export const Auth = () => {
               />
             </div>
             <div>
-              <button className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded" disabled={loading}>
+              <button
+                className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+                disabled={loading}
+              >
                 {loading ? <span>Loading</span> : <span>Send otp</span>}
               </button>
             </div>

@@ -6,16 +6,17 @@ import { Navigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import { RxCopy } from "react-icons/rx";
 
-export const Navbar = () => {
+export const Navbar = ({a_or_p}) => {
   return (
     <div className="flex bg-white justify-center">
       <div className="w-screen flex justify-between font-mono items-center px-20 p-4">
-        <div className="flex gap-3 text-3xl font-bold">
+        <div className="flex text-3xl font-sans justify-center items-center">
+          {/* add logo */}
+          <img src="finalLogo.png" alt="" className="w-10" />
           <div className="flex">
-            <p className="text-orange-500">Ed</p>
-            <p className="text-green-400">you</p>
+            <p className="font-extrabold">edyou</p>
           </div>
-          <p>Partners</p>
+          <p>{a_or_p=='a'?"ambassador":"partners"}</p>
         </div>
 
         <div className="flex items-center gap-5">
@@ -37,10 +38,10 @@ export const Navbar = () => {
                 For any queries, please contact us at
               </p>
               <div className="flex p-2 items-center bg-slate-100 justify-between rounded-sm gap-2">
-                <p>+91 1234567890</p>
+                <p>+91 99877 02272</p>
                 <button
                   onClick={() =>
-                    navigator.clipboard.writeText("+91 1234567890")
+                    navigator.clipboard.writeText("+91 9987702272")
                   }
                   className="flex items-center p-2 rounded-md bg-slate-300 active:bg-green-100 active:text-green-900 text-blue-600"
                 >

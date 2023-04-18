@@ -13,13 +13,11 @@ export const Insights = ({ session }) => {
         .select("*")
         .eq("user_id", user.id);
 
-      console.log(data);
 
       if (error) {
         console.log(error);
       } else if (data) {
         setData(data);
-        console.log(data);
       }
     }
     getLeads();
@@ -59,16 +57,15 @@ export const Insights = ({ session }) => {
           <div className="flex flex-col border-2 p-4 gap-5 py-5 rounded-md basis-1/6">
             <p className="text-6xl">
               {
-                // data has an array of leads , each lead is an object that has many services, lead.services is an object , each service is an object that has a cost as number and used as boolean . Return the sum of all the services that are used . check for lead.services to be an object
+                // data has an array of leads , each lead is an object that has many services, lead.services is an object , each service is an object that has a cost as number and used as boolean . Return the sum of all the services that are used . check for lead.services to be an object . check lead.status.booked to be true
                 data
-                  .filter((lead) => lead.services)
+                  .filter((lead) => lead.status?.booked === true)
                   .map((lead) =>
                     Object.values(lead.services)
-                      .filter((service) => service.used)
-                      .map((service) => service.cost)
-                      .reduce((a, b) => a + b, 0)
+                      .filter((service) => service.used === true)
+                      .reduce((a, b) => a + b.cost, 0)
                   )
-                  .reduce((a, b) => a + b, 0)
+                  .reduce((a, b) => a + b, 0)/10
                 
               }
             </p>

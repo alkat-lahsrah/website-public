@@ -78,14 +78,12 @@ export const LeadTable = ({ session }) => {
     const getLeads = async () => {
       let { data, error } = await supabase.from("leads").select("*");
 
-      console.log(data);
 
       if (error) {
         console.log(error);
       }
 
       if (data) {
-        console.log(data);
         setLeadsData(data);
         setLeadsData1(data);
       }
@@ -257,7 +255,7 @@ export const LeadTable = ({ session }) => {
                   <TimeAgo date={lead.created_at} />
                 </td>
                 <td className="border p-2">
-                  <LeadPopup lead={lead}/>
+                  <LeadPopup lead={lead} session={session}/>
                 </td>
               </tr>
             ))}

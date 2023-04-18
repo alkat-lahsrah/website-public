@@ -17,7 +17,6 @@ export const Account = () => {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
-    console.log(session);
   }, [])
   
 

@@ -5,7 +5,7 @@ import { Insights } from "./Insights";
 import { Integrations } from "./Integrations";
 import { Leads } from "./Leads";
 
-export const HomeWithDataHandling = ({ session }) => {
+export const HomeWithDataHandling = ({ session, setAOrP }) => {
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(null);
@@ -16,18 +16,17 @@ export const HomeWithDataHandling = ({ session }) => {
     async function getProfile() {
       setLoading(true);
       const { user } = session;
-      console.log(session);
 
       let { data, error } = await supabase
         .from("profiles")
-        .select("full_name,phone_number")
+        .select("full_name,phone_number,a_or_p")
         .eq("id", user.id)
         .single();
-      console.log(data);
 
       if (error) {
         console.log(error);
       } else if (data) {
+        setAOrP(data.a_or_p);
         setUserName(data.full_name);
         setPhoneNumber(data.phone_number);
       }

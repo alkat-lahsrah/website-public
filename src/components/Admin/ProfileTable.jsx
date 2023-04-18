@@ -23,14 +23,12 @@ export const ProfileTable = ({ session }) => {
       let { data, error } = await supabase
         .from("profiles")
         .select("id,full_name,phone_number,email,created_at");
-      console.log(data);
 
       if (error) {
         console.log(error);
       }
 
       if (data) {
-        console.log(data);
         setProfilesData(data);
         setProfileData1(data);
       }

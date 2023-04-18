@@ -7,6 +7,7 @@ import { LoadingScreen } from './LoadingScreen'
 
 export const Home = () => {
   
+  const [a_or_p, setAOrP] = useState("a");
   const [session, setSession] = useState(undefined)
 
   useEffect(() => {
@@ -24,9 +25,9 @@ export const Home = () => {
     // true?
     <div id="home" className='bg-[#e7e7e7] text-[#333] w-screen'>
       <div className='backdrop-blur-lg absolute border-2 backdrop-filter w-screen top-0 z-50'>
-        <Navbar/>
+        <Navbar a_or_p={a_or_p}/>
       </div>
-      <HomeWithDataHandling session={session} key={session.user.id}/>
+      <HomeWithDataHandling session={session} setAOrP={setAOrP} key={session.user.id}/>
     </div>
   )
 }
