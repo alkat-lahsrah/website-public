@@ -63,15 +63,16 @@ export const Navbar = ({a_or_p}) => {
             </div>
           </Popup>
 
-          <a href="/account">
+          
             <motion.button
+              onClick={() => <Navigate to="/profile" />}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
               className="flex items-center gap-1 text-lg"
             >
               <CgProfile /> Profile
             </motion.button>
-          </a>
+          
         </div>
       </div>
     </div>
