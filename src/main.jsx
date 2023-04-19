@@ -10,24 +10,19 @@ import './index.css'
 const router = createBrowserRouter([
   {
     path: '/',
-    children:[
-      {
-        path: '/',
-        element: <Account></Account>
-      },
-      {
-        path: '/account',
-        element: <Account></Account>
-      },
-      {
-        path: '/home',
-        element: <Home></Home>
-      },
-      {
-        path: '/admin',
-        element: <Admin></Admin>
-      }
-    ]
+    element: <App />,
+  },
+  {
+    path: 'account',
+    element: <Account></Account>
+  },
+  {
+    path: 'home',
+    element: <Home></Home>
+  },
+  {
+    path: 'admin',
+    element: <Admin></Admin>
   }
 ])
 
