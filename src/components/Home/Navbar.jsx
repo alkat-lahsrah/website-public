@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { BiSupport } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { Navigate } from "react-router-dom";
+import { Navigate, Router } from "react-router-dom";
 import Popup from "reactjs-popup";
 import { RxCopy } from "react-icons/rx";
 
@@ -63,15 +63,14 @@ export const Navbar = ({a_or_p}) => {
             </div>
           </Popup>
 
-          
+            <a href="/account">
             <motion.button
-              onClick={() => <Navigate to="/profile" />}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
               className="flex items-center gap-1 text-lg"
             >
               <CgProfile /> Profile
-            </motion.button>
+            </motion.button></a>
           
         </div>
       </div>
