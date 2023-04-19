@@ -7,7 +7,7 @@ import { Home } from './components/Home'
 import { Admin } from './components/Admin'
 import './index.css'
 
-const router = createHashRouter([
+const router = createStaticRouter([
   {
     path: '/',
     element: <App />,
