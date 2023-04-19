@@ -7,21 +7,21 @@ import { Home } from './components/Home'
 import { Admin } from './components/Admin'
 import './index.css'
 
-const router = createStaticRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <App />,
   },
   {
-    path: '/account',
+    path: 'account',
     element: <Account></Account>
   },
   {
-    path: '/home',
+    path: 'home',
     element: <Home></Home>
   },
   {
-    path: '/admin',
+    path: 'admin',
     element: <Admin></Admin>
   }
 ])
