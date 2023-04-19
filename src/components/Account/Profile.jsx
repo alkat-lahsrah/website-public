@@ -148,15 +148,14 @@ export const Profile = ({ session }) => {
             </div>
 
             <div className="flex gap-10 justify-end pt-10">
-              
+              <a href="/home">
                 <button
-                  onClick={() => Router.push("/")}
                   className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
                   type="button"
                 >
                   Go to Home
                 </button>
-              
+              </a>
               <button
                 className="shadow bg-red-600 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
                 type="button"

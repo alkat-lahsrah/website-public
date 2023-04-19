@@ -27,7 +27,6 @@ function App() {
   return (
     <div className="">
       {session===undefined?<LoadingScreen/>:(session===null ? <Navigate to="/account"></Navigate> : <Navigate to="/home"></Navigate>)}
-      {/* {true ? <Navigate to="/home"></Navigate> : <Navigate to="/account"></Navigate>} */}
     </div>
   )
 }
