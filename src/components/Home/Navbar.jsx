@@ -63,7 +63,7 @@ export const Navbar = ({a_or_p}) => {
             </div>
           </Popup>
 
-            <a href="/account">
+            <a href="/#/account">
             <motion.button
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
