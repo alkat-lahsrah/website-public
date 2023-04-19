@@ -21,7 +21,7 @@ export const Home = () => {
   }, [])
 
   return (
-    session===undefined?<LoadingScreen/>:session===null?<Navigate to={'/account'}/>:
+    session===undefined?<LoadingScreen/>:session===null?<Navigate to={'/#/account'}/>:
     // true?
     <div id="home" className='bg-[#e7e7e7] text-[#333] w-screen'>
       <div className='backdrop-blur-lg absolute border-2 backdrop-filter w-screen top-0 z-50'>

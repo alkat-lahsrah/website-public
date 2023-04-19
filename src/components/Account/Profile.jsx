@@ -148,7 +148,7 @@ export const Profile = ({ session }) => {
             </div>
 
             <div className="flex gap-10 justify-end pt-10">
-              <a href="/home">
+              <a href="/#/home">
                 <button
                   className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
                   type="button"
