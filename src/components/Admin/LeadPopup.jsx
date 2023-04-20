@@ -3,7 +3,7 @@ import React from "react";
 import Modal from "react-modal";
 import { supabase } from "../../helpers/supabaseClient";
 
-export const LeadPopup = ({ lead,session }) => {
+export const LeadPopup = ({ lead, session }) => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [status, setStatus] = React.useState(lead.status);
   const [services, setServices] = React.useState(lead.services);
@@ -32,13 +32,19 @@ export const LeadPopup = ({ lead,session }) => {
       service4: { ...services.service4, used: !services.service4.used },
     });
   };
+  const handleS5 = () => {
+    setServices({
+      ...services,
+      service5: { ...services.service5, used: !services.service5.used },
+    });
+  };
 
   const editLead = async () => {
     const { user } = session;
     const { data, error } = await supabase
       .from("leads")
       .update({ services: services })
-      .eq("id", lead.id)
+      .eq("id", lead.id);
   };
 
   const openModal = () => {
@@ -88,7 +94,8 @@ export const LeadPopup = ({ lead,session }) => {
                   handleS1,
                   handleS2,
                   handleS3,
-                  handleS4
+                  handleS4,
+                  handleS5
                 )}
                 <div className="flex p-2 justify-center">
                   <button
@@ -111,7 +118,14 @@ export const LeadPopup = ({ lead,session }) => {
   );
 };
 
-function handleServices(services, handleS1, handleS2, handleS3, handleS4) {
+function handleServices(
+  services,
+  handleS1,
+  handleS2,
+  handleS3,
+  handleS4,
+  handleS5
+) {
   return (
     <div className="bg-white p-2 rounded-lg shadow-md border">
       <div className="flex gap-2">
@@ -157,6 +171,17 @@ function handleServices(services, handleS1, handleS2, handleS3, handleS4) {
           onChange={handleS4}
         />
         <span>Service 4</span>
+      </div>
+      <div className="flex gap-2">
+        <input
+          type="checkbox"
+          name="status"
+          id="status"
+          value={services.service5.used}
+          checked={services.service5.used}
+          onChange={handleS5}
+        />
+        <span>Service 5</span>
       </div>
     </div>
   );
