@@ -41,13 +41,13 @@ export const Auth = () => {
 
   return (
     <div className="flex flex-col gap-5 items-center justify-center h-screen text-xl">
-      <div className="flex text-3xl font-sans justify-center items-center">
+      <div className="flex text-6xl font-sans justify-center items-center">
         {/* add logo */}
-        <img src="finalLogo.png" alt="" className="w-10" />
+        {/* <img src="finalLogo.png" alt="" className="w-10" /> */}
         <div className="flex">
-          <p className="font-extrabold">edyou</p>
+          <p className="font-extrabold">speak</p>
         </div>
-        <p>abroad</p>
+        <p>Pro</p>
       </div>
       {recieveOtp ? (
         <div className="">

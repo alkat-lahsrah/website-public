@@ -141,7 +141,7 @@ export const ModalPopup = ({ session }) => {
 
   return (
     <div>
-      <button onClick={openModal}>Add Lead</button>
+      <button onClick={openModal}>Add Video</button>
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}

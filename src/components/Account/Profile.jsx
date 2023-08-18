@@ -20,7 +20,7 @@ export const Profile = ({ session }) => {
 
       let { data, error } = await supabase
         .from("profiles")
-        .select("full_name,phone_number,organization_name,a_or_p")
+        .select("full_name,phone_number")
         .eq("id", user.id)
         .single();
 
@@ -28,13 +28,12 @@ export const Profile = ({ session }) => {
         console.log(error);
         if (error.code === "PGRST116") {
           setNewUser(true);
+          updateProfile();
         }
       } else if (data) {
         setUserName(data.full_name);
         setNewUser(false);
         setPhoneNumber(data.phone_number);
-        setOrganizationName(data.organization_name);
-        setAOrP(data.a_or_p);
       }
       setLoading(false);
     }
@@ -42,14 +41,13 @@ export const Profile = ({ session }) => {
   }, [session]);
 
   async function updateProfile() {
-    console.log("okokok");
+    setLoading(true);
     const { user } = session;
     const updates = {
       id: user.id,
       full_name: userName,
       phone_number: phoneNumber,
       email: user.email,
-      organization_name: organizationName,
     };
 
     let { error } = await supabase.from("profiles").upsert(updates);
@@ -62,17 +60,17 @@ export const Profile = ({ session }) => {
 
   return (
     <>
-      {newUser ? (
+      {false ? (
         <AmbassadorOrPartners session={session} />
       ) : (
         <div className="w-screen h-screen flex justify-center items-center flex-col p-5">
           <div className="flex text-3xl font-sans justify-center items-center">
             {/* add logo */}
-            <img src="finalLogo.png" alt="" className="w-10" />
+            {/* <img src="finalLogo.png" alt="" className="w-10" /> */}
             <div className="flex">
-              <p className="font-extrabold">edyou</p>
+              <p className="font-extrabold">speak</p>
             </div>
-            <p>{aOrP == "a" ? "ambassador" : "partners"}</p>
+            <p>Pro</p>
           </div>
           <div className="mt-4 text-sm leading-7 text-gray-500 font-regular uppercase">
             <p>Profile</p>

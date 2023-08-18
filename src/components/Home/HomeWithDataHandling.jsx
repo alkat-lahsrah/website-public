@@ -19,14 +19,15 @@ export const HomeWithDataHandling = ({ session, setAOrP }) => {
 
       let { data, error } = await supabase
         .from("profiles")
-        .select("full_name,phone_number,a_or_p")
+        .select("full_name,phone_number")
         .eq("id", user.id)
         .single();
 
+      console.log("abcccc");
+      console.log(data);
       if (error) {
         console.log(error);
       } else if (data) {
-        setAOrP(data.a_or_p);
         setUserName(data.full_name);
         setPhoneNumber(data.phone_number);
       }
