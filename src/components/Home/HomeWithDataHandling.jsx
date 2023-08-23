@@ -23,8 +23,6 @@ export const HomeWithDataHandling = ({ session, setAOrP }) => {
         .eq("id", user.id)
         .single();
 
-      console.log("abcccc");
-      console.log(data);
       if (error) {
         console.log(error);
       } else if (data) {
@@ -34,7 +32,7 @@ export const HomeWithDataHandling = ({ session, setAOrP }) => {
       setLoading(false);
     }
     getProfile();
-  }, [session]);
+  }, []);
 
   return (
     <div className="flex pt-[74px] h-screen gap-4 items-center overflow-scroll w-screen flex-col">
@@ -44,11 +42,11 @@ export const HomeWithDataHandling = ({ session, setAOrP }) => {
         key={session.user.id}
         id={session.user.id}
       />
-      <Insights session={session} key={session.user.id}/>
+      {/* <Insights session={session} key={session.user.id}/> */}
       <div className="">
         <Leads session={session} key={session.user.id} />
       </div>
-      <Integrations />
+      {/* <Integrations /> */}
     </div>
   );
 };

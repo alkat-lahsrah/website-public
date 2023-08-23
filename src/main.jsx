@@ -6,6 +6,7 @@ import { Account } from './components/Account'
 import { Home } from './components/Home'
 import { Admin } from './components/Admin'
 import './index.css'
+import Videos from './components/Home/videos'
 
 const router = createHashRouter([
   {
@@ -23,6 +24,10 @@ const router = createHashRouter([
   {
     path: 'admin',
     element: <Admin></Admin>
+  },
+  {
+    path: 'v/:id',
+    element: <Videos></Videos>
   }
 ])
 

@@ -6,53 +6,34 @@ import { supabase } from '../../helpers/supabaseClient'
 export const Headers = (props) => {
   const [uploading, setUploading] = React.useState(false)
 
-  async function uploadVideo(event) {
-    try {
-      setUploading(true)
-
-      if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.')
-      }
-
-      const file = event.target.files[0]
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
-
-      let { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
-
-      if (uploadError) {
-        throw uploadError
-      }
-
-      onUpload(event, filePath)
-    } catch (error) {
-      alert(error.message)
-    } finally {
-      setUploading(false)
-    }
-  }
 
   async function uploadVideo(event) {
     try {
       setUploading(true)
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.')
+        throw new Error('You must select a video to upload.')
       }
 
       const file = event.target.files[0]
+      console.log(file.name);
       const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
+      console.log(fileExt);
+      const fileName = `${file.name}`
+      console.log(fileName);
+      const filePath = `${props.id}/${fileName}`
+      console.log(filePath);
 
-      let { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
+      let { error: uploadError } = await supabase.storage.from('videos').upload(filePath, file)
+      console.log(uploadError);
 
       if (uploadError) {
         throw uploadError
       }
 
-      onUpload(event, filePath)
+
+      await newFunction(fileName)
+
     } catch (error) {
       alert(error.message)
     } finally {
@@ -100,4 +81,22 @@ export const Headers = (props) => {
       </div>
     </div>
   )
+
+  async function newFunction(fileName) {
+    const { data, error } = await supabase
+      .from('videouserlist')
+      .insert([
+        { video_name: fileName, user_id: props.id },
+      ])
+
+    if (data) {
+      //reload site
+      console.log("reloading");
+
+    }
+
+    if (error) {
+      throw error
+    }
+  }
 }

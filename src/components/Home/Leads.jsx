@@ -6,25 +6,22 @@ import { BsFillFilterCircleFill } from "react-icons/bs";
 import Popup from "reactjs-popup";
 import { Services } from "./Leads/Services";
 import { UpdateLead } from "./Leads/UpdateLead";
+import { Navigate } from "react-router-dom";
 
 export const Leads = ({ session }) => {
   const [data, setData] = useState([{}]);
   const [data1, setData1] = useState([]);
   const [search, setSearch] = useState("");
-  const [f1, setF1] = useState(true);
-  const [f2, setF2] = useState(true);
-  const [f3, setF3] = useState(true);
-  const [f4, setF4] = useState(true);
-  const [f5, setF5] = useState(true);
+
   const ref = useRef();
   const closeTooltip = () => ref.current.close();
 
   useEffect(() => {
-    async function getLeads() {
+    async function getVideosList() {
       const { user } = session;
 
       let { data, error } = await supabase
-        .from("leads")
+        .from("videouserlist")
         .select("*")
         .eq("user_id", user.id);
 
@@ -36,298 +33,56 @@ export const Leads = ({ session }) => {
         setData1(data);
       }
     }
-    getLeads();
-  }, [session]);
+    getVideosList();
+  }, []);
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-    closeTooltip();
-    //data is an array that has many leads each lead is an object that has name as string . return leads that have search as a substring of name
-    const filteredData = data.filter((lead) =>
-      lead.name.toLowerCase().includes(search.toLowerCase())
-    );
-    setData1(filteredData);
-  };
-  const handleFilter1 = (e) => {
-    setF1(!f1);
-  };
-  const handleFilter2 = (e) => {
-    setF2(!f2);
-  };
-  const handleFilter3 = (e) => {
-    setF3(!f3);
-  };
-  const handleFilter4 = (e) => {
-    setF4(!f4);
-  };
-  const handleFilter5 = (e) => {
-    setF5(!f5);
-  };
 
-  const handleFilters = (e) => {
-    closeTooltip();
-    
-    const filteredData = data.filter((lead) => {
-      //code below is mot working as expected
-      if (f1) {
-        if (lead.status?.contacted === true) {
-          return lead;
-        }
-      }
-      if (f2) {
-        if (lead.status?.awaiting_response === true) {
-          return lead;
-        }
-      }
-      if (f3) {
-        if (lead.status?.in_process === true) {
-          return lead;
-        }
-      }
-      if (f4) {
-        if (lead.status?.booked === true) {
-          return lead;
-        }
-      }
-      if (f5) {
-        if (lead.status?.did_not_book === true) {
-          return lead;
-        }
-      }
-    });
-    setData1(filteredData);
-  };
-
-  const handleClear = (e) => {
-    setF1(true);
-    setF2(true);
-    setF3(true);
-    setF4(true);
-    setF5(true);
-    handleFilters(e);
-  };
 
   return (
     <div className="max-w-[1700px] overflow-x-auto rounded-sm bg-white w-screen">
       <div className="flex flex-col justify-between m-10">
         {/* top */}
         <div className="flex">
-          <p className="text-3xl font-bold py-2">Leads</p>
+          <p className="text-3xl font-bold py-2">Your videos</p>
         </div>
 
         {/* bottom */}
         <div className="flex gap-5"></div>
-        <table className="border-2">
+        <table className="border-2 table-auto overflow-scroll">
           <thead>
             <tr>
-              <th className="flex w-full justify-center items-center py-4 text-xl">
-                <p className="basis-[14.28%]">Lead ID</p>
-                <p className="basis-[14.28%] flex justify-center">
-                  <Popup
-                    trigger={
-                      <button className="flex gap-1 items-center">
-                        <AiOutlineSearch />
-                        <p>Lead Name</p>
-                      </button>
-                    }
-                    position="top center"
-                    className="bg-white"
-                  >
-                    <div className="flex flex-col items-end gap-2 bg-white p-2 border">
-                      <input
-                        type="text"
-                        name=""
-                        id=""
-                        className="m-0 border active:border-0 p-2 border-black focus:border-0"
-                        onChange={(e) => setSearch(e.target.value)}
-                      />
-                      <button
-                        onClick={handleSearch}
-                        className="bg-green-500 p-2 px-5 text-white rounded "
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </Popup>
-                </p>
-                <p className="basis-[14.28%] flex justify-center">
-                  <Popup
-                    ref={ref}
-                    trigger={
-                      <button className="flex gap-1 items-center">
-                        <BsFillFilterCircleFill></BsFillFilterCircleFill>
-                        <p>Status</p>
-                      </button>
-                    }
-                    position="top center"
-                    className="bg-white"
-                  >
-                    <div className="bg-white p-2 rounded-lg shadow-md border">
-                      <div className="flex gap-2">
-                        <input
-                          type="checkbox"
-                          name="status"
-                          id="status"
-                          value={f1}
-                          checked={f1}
-                          onChange={handleFilter1}
-                        />
-                        <span>Contacted</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <input
-                          type="checkbox"
-                          name="status"
-                          id="status"
-                          value={f2}
-                          checked={f2}
-                          onChange={handleFilter2}
-                        />
-                        <span>Awaiting response</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <input
-                          type="checkbox"
-                          name="status"
-                          id="status"
-                          value={f3}
-                          checked={f3}
-                          onChange={handleFilter3}
-                        />
-                        <span>In process</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <input
-                          type="checkbox"
-                          name="status"
-                          id="status"
-                          value={f4}
-                          checked={f4}
-                          onChange={handleFilter4}
-                        />
-                        <span>Booked</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <input
-                          type="checkbox"
-                          name="status"
-                          id="status"
-                          value={f5}
-                          checked={f5}
-                          onChange={handleFilter5}
-                        />
-                        <span>Did not book</span>
-                      </div>
-                      <div className="flex justify-around">
-                        <button
-                          onClick={handleFilters}
-                          className="bg-blue-500 text-white rounded-md p-2"
-                        >
-                          Apply
-                        </button>
-                        <button
-                          onClick={handleClear}
-                          className="bg-red-500 text-white rounded-md p-2"
-                        >
-                          Clear
-                        </button>
-                      </div>
-                    </div>
-                  </Popup>
-                </p>
-                <p className="basis-[14.28%] justify-center items-center">
-                  Services taken
-                </p>
-                <p className="basis-[14.28%] justify-center items-center">
-                  Total Commission
-                </p>
-                <p className="basis-[14.28%] justify-center items-center">
-                  Your Commission
-                </p>
-                <p className="basis-[14.28%] justify-center items-center">
-                  Created At
-                </p>
+              <th className="border p-2">
+                Index
+              </th>
+              <th className="border p-2">
+                Video Name
+              </th>
+              <th className="border p-2">
+                Created at
+              </th>
+              <th className="border p-2">
+                Analize
               </th>
             </tr>
           </thead>
-          {data1.map((lead) => {
-            return (
-              <tbody>
-                <tr>
-                  <td className="flex w-full justify-evenly border items-center text-xl">
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex items-center py-2 justify-center self-center">
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(lead.id);
-                        }}
-                        className="bg-gray-200 hover:shadow rounded-full p-2 px-3 shadow-xl active:shadow-lg active:bg-green-200"
-                      >
-                        Click to copy
-                      </button>
-                    </p>
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex items-center justify-center self-center">
-                      <>{lead.name}</>
-                    </p>
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex self-center items-center justify-center">
-                      {/* check if lead.status is n object. if so return all the keys whose values are true */}
-                      {typeof lead.status === "object"
-                        ? Object.keys(lead.status).map((key) => {
-                            if (lead.status[key] === true) {
-                              return (
-                                key
-                                  .replace(/_/g, " ")
-                                  .replace(key[0], key[0].toUpperCase()) + " "
-                              );
-                            }
-                          })
-                        : lead.status}
-                    </p>
-                    <Services lead={lead} />
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex item-center justify-center self-center">
-                      {
-                        // lead.services is an object that has many services each service is an object that has used as boolean and cost as number return sum of all the costs where used is true
-                        typeof lead.services === "object"
-                          ? Object.keys(lead.services).reduce((acc, key) => {
-                              if (lead.services[key].used === true) {
-                                return acc + lead.services[key].cost;
-                              } else {
-                                return acc;
-                              }
-                            }, 0)
-                          : lead.services
-                      }
-                    </p>
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex item-center justify-center self-center">
-                      {
-                        // lead.services is an object that has many services each service is an object that has used as boolean and cost as number return sum of all the costs where used is true
-                        typeof lead.services === "object"
-                          ? Object.keys(lead.services).reduce((acc, key) => {
-                              if (lead.services[key].used === true) {
-                                return acc + lead.services[key].cost / 10;
-                              } else {
-                                return acc;
-                              }
-                            }, 0)
-                          : lead.services
-                      }
-                    </p>
-                    <p className="w-full basis-[14.28%] overflow-x-auto flex item-center justify-around self-center">
-                      <p></p>
-                      <TimeAgo date={lead.created_at} />
-                      {lead.status.booked === true ||
-                      lead.status.did_not_book === true ? (
-                        <p></p>
-                      ) : (
-                        <p className="hover:bg-slate-200 p-2 rounded-full">
-                          <UpdateLead lead={lead} session={session} />
-                        </p>
-                      )}
-                    </p>
-                  </td>
-                </tr>
-              </tbody>
-            );
-          })}
+          <tbody>
+            {data.map((item, index) => (
+              <tr key={index}>
+                <td className="border p-2">{index + 1}</td>
+                <td className="border p-2">{item.video_name}</td>
+                <td className="border p-2">
+                  <TimeAgo date={item.created_at} />
+                </td>
+                <td className="border p-2">
+                  <a href={`/#/v/${item.video_id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Analyze
+                  </a>
+                </td>
+              </tr>
+            ))}
+
+
+          </tbody>
         </table>
       </div>
     </div>

@@ -12,15 +12,12 @@ function App() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(()=>{return session==null?null:session})
-      console.log(session);
     })
 
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
-      console.log(session);
     })
     
-    console.log(session);
   }, [])
   
 
