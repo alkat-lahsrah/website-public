@@ -5,7 +5,7 @@ import { CgProfile } from "react-icons/cg";
 import { Navigate, Router } from "react-router-dom";
 import Popup from "reactjs-popup";
 import { RxCopy } from "react-icons/rx";
-
+// just to check
 export const Navbar = ({a_or_p}) => {
   return (
     <div className="flex bg-white justify-center">
