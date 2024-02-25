@@ -1,0 +1,14 @@
+supabase
+librosa
+matplotlib 
+numpy
+ffmpeg-python
+speechrecognition
+SpeechRecognition
+openai-whisper
+pip
+setuptools
+wheel
+asent
+spacy
+pandas
