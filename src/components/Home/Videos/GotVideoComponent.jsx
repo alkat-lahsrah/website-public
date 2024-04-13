@@ -6,6 +6,7 @@ const GotVideoComponent = (props) => {
     const [vurl, setUrl] = useState(undefined);
     const [acUrl,setAcUrl]=useState(undefined);
     const videoExt = props.video.video_name.split('.').pop(); // A cleaner way to get the file extension
+    const [data,setData] = useState(undefined)
 
     useEffect(() => {
         const addToUrl = `${props.session.user.id}/${props.video.video_name}`;
@@ -33,7 +34,7 @@ const GotVideoComponent = (props) => {
     const btnClicked = (url) => {
         // Define the full URL to your Flask endpoint
         const apiUrl = 'http://127.0.0.1:5000/api/analyze-video';
-        
+        setData(null)
         const data = { videoUrl: url };
     
         fetch(apiUrl, {
@@ -47,22 +48,28 @@ const GotVideoComponent = (props) => {
         .then(response => response.json())
         .then(data => {
             // Handle response
+            setData(data)
             console.log(data);
         })
         .catch(error => {
+            setData(undefined)
             console.error('Error:', error);
         });
     };
     
 
     return (
-        vurl === undefined ? <LoadingScreen /> :
-            <div>
+        (vurl === undefined || data===null ) ? <LoadingScreen /> :
+            <div className='w-screen'>
                 <video controls>
                     <source src={vurl} type={`video/${videoExt}`} />
                 </video>
-                <button onClick={()=>btnClicked(acUrl)}>Analyze</button>
+                <button className='bg-blue-600 text-white p-1 rounded-md m-2' onClick={()=>btnClicked(acUrl)}>Analyze</button>
+                <div className='w-screen'>
+                    {JSON.stringify(data)}
+                </div>
             </div>
+            
     );
 };
 

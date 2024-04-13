@@ -2,59 +2,77 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from supabaseClient import supabase
 import os
-from urllib.parse import urlparse
-
+from urllib.parse import urlparse, unquote
+from exp import transcribe_video, nlpTasks
+import requests  # Make sure requests is properly installed
+import logging
 
 app = Flask(__name__)
-# Enable CORS for all domains on all routes. For development only!
-CORS(app)
+CORS(app)  # Enable CORS for all domains on all routes. For development only!
 
-# For more control, you can specify the origins you want to allow
-# CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5173/"}})
+# Setup basic logging
+logging.basicConfig(level=logging.INFO)
 
 @app.route('/api/analyze-video', methods=['POST'])
 def analyze_video():
-    data = request.json  # Get JSON data from the request
-    video_url = data.get("videoUrl")  # Make sure to validate and sanitize input
-    print(video_url)
-    if not video_url:
+    data = request.json
+    video_path = data.get("videoUrl")
+    if not video_path:
         return jsonify({"error": "No video URL provided"}), 400
 
+    logging.info(f"Received video URL: {video_path}")
+
     # Attempt to download the video
-    video_data, error = get_video(video_url)
+    download_path, error = get_video(video_path)
     
     if error:
+        logging.error(f"Error downloading video: {error}")
         return jsonify({"error": str(error)}), 500
 
-    # Here you would analyze the video_data and then return the results
-    # For debugging, let's just return a success message
-    return jsonify({"message": "Video downloaded successfully"})
-
-
+    # Process the video
+    text = transcribe_video(download_path)
+    text_results = nlpTasks(text)
+    logging.info(f"Video transcription and NLP results: {text_results}")
+    
+    return jsonify({"message": "Video processed successfully", "results": text_results})
 
 def get_video(video_path):
-    # Define the destination path where the video will be saved
-    destination_path = os.path.join(app.root_path, 'downloads', video_path)
+    parsed_path = urlparse(video_path).path
+    safe_path = unquote(os.path.basename(parsed_path))  # decode URL-encoded path and extract the safe file name
+    destination_path = os.path.join(app.root_path, 'downloads', safe_path)
     os.makedirs(os.path.dirname(destination_path), exist_ok=True)
-    
-    try:
-        # Attempt to download the file from Supabase storage
-        response = supabase.storage.from_('videos').download(video_path)
-        
-        # Assuming 'response' needs to be checked for success/error
-        if hasattr(response, 'error') and response.error:
-            print(f"Download error: {response.error.message}")  # Log error message for debugging
-            return None, response.error.message
-        
-        # Write the binary content to the destination file
-        with open(destination_path, 'wb+') as file:
-            file.write(response)  # If 'response' is indeed the binary content
-            
-        return destination_path, None
-    except Exception as e:
-        print(f"Exception occurred: {e}")  # Log the exception for debugging
-        return None, str(e)
 
+    try:
+        logging.info("Creating signed URL")
+        response = supabase.storage.from_('videos').create_signed_url(video_path, 3600)  # 3600 seconds = 1 hour
+        if 'error' in response:
+            logging.error(f"Supabase signed URL creation failed: {response['error']}")
+            return None, response['error']['message']
+        
+        signed_url = response.get('signedURL')
+        if not signed_url:
+            error_message = "Failed to obtain signed URL"
+            logging.error(error_message)
+            return None, error_message
+
+        logging.info(f"Downloading video from: {signed_url}")
+        # Download the video using the signed URL
+        with requests.get(signed_url, stream=True) as r:
+            r.raise_for_status()
+            with open(destination_path, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
+
+        logging.info("Video downloaded successfully")
+        return destination_path, None
+    except requests.RequestException as e:
+        error_message = f"Request failed: {str(e)}"
+        logging.error(error_message)
+        return None, error_message
+    except Exception as e:
+        error_message = f"An error occurred: {str(e)}"
+        logging.error(error_message)
+        return None, error_message
 
 if __name__ == '__main__':
     app.run(debug=True)
