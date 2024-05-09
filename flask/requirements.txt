@@ -12,3 +12,4 @@ wheel
 asent
 spacy
 pandas
+faster-whisper

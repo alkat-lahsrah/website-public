@@ -146,3 +146,16 @@ def detect_filler_words(text, filler_words):
     doc = nlp(text.lower())  # Convert text to lowercase for case-insensitive detection
     filler_word_count = sum(1 for token in doc if token.text in filler_words)
     return filler_word_count
+
+# def det_filler_words(text):
+#     word_timestamps = []
+#     current_time = 0.0
+#     doc = nlp(text)
+
+#     for token in doc:
+#         word_start = current_time
+#         word_end = current_time + (len(token.text_with_ws) / len(segment.text)) * (segment.end - segment.start)
+#         word_timestamps.append((word_start, word_end))
+#         current_time = word_end
+
+#     return res
