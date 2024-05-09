@@ -5,6 +5,8 @@ from numpy import disp
 from spacy import displacy
 import heapq
 import pandas as pd
+import numpy as np
+import librosa
 
 
 model = whisper.load_model("base")
@@ -66,11 +68,13 @@ def transcribe_video(file_path):
     full_text = result.get("text", "")
     print(full_text)
     full_transcription += full_text
+    # segments,full_transcription
 
-    return full_transcription
+
+    return full_transcription,segments
 
 
-def nlpTasks(text):
+def nlpTasks(text,segments,file_path):
     doc=nlp(text)
     svg1=displacy.render(doc,style="dep") #####
     svg2=displacy.render(doc,style="ent") #####
@@ -115,13 +119,15 @@ def nlpTasks(text):
     total_words=len(text.split())
     filler_word_percentage=filler_word_count/total_words*100 #####
     highlighted_paragraph = detect_and_highlight_filler_words(text, filler_words) #####
+    res1=det_filler_words(text,segments,doc,file_path) ####new
     dicti={
         'svg1':svg1,
         'svg2':svg2,
         'html1':html1,
         'summary':summary,
         'filler_word_percentage':filler_word_percentage,
-        'highlighted_paragraph':highlighted_paragraph
+        'highlighted_paragraph':highlighted_paragraph,
+        'filler_new':res1
     }
     return dicti
 
@@ -147,15 +153,87 @@ def detect_filler_words(text, filler_words):
     filler_word_count = sum(1 for token in doc if token.text in filler_words)
     return filler_word_count
 
-# def det_filler_words(text):
-#     word_timestamps = []
-#     current_time = 0.0
-#     doc = nlp(text)
 
-#     for token in doc:
-#         word_start = current_time
-#         word_end = current_time + (len(token.text_with_ws) / len(segment.text)) * (segment.end - segment.start)
-#         word_timestamps.append((word_start, word_end))
-#         current_time = word_end
 
-#     return res
+####new
+def det_filler_words(text,segments,doc,file_path):
+    word_timestamps = []
+    current_time = 0.0
+
+    for token in doc:
+        word_start = current_time
+        word_end = current_time + (len(token.text_with_ws) / len(segment.text)) * (segment.end - segment.start)
+        word_timestamps.append((word_start, word_end))
+        current_time = word_end
+
+    print("Word Timestamps:")
+    for i, (start, end) in enumerate(word_timestamps):
+        word_number = i + 1
+        word = doc[i].text
+        print("Word {}: [{} -> {}] {}".format(word_number, start, end, word))
+
+    filler_word_indices = [i for i, (start, end) in enumerate(word_timestamps) if doc[i].text.lower() in filler_words]
+
+    def calculate_average_pause_per_sentence(word_timestamps):
+        sentence_indices = [i for i, token in enumerate(doc) if token.is_sent_start]
+        sentence_indices.append(len(word_timestamps))
+
+        sentence_avg_pauses = []
+        for i in range(len(sentence_indices) - 1):
+            start_index = sentence_indices[i]
+            end_index = sentence_indices[i + 1]
+
+            sentence_word_durations = np.diff(np.array(word_timestamps[start_index:end_index])[:, 0])
+
+            if len(sentence_word_durations) > 0:
+                avg_pause_duration = np.mean(sentence_word_durations)
+            else:
+                avg_pause_duration = 0.0
+
+            sentence_avg_pauses.append(avg_pause_duration)
+
+        return sentence_avg_pauses
+    
+    def calculate_average_pause_duration(word_timestamps, filler_word_indices, audio_file_path):
+        audio, sr = librosa.load(audio_file_path, sr=None)
+
+        word_durations = np.diff(np.array(word_timestamps)[:, 0])
+
+        filler_word_durations = [word_durations[i + 1] for i in filler_word_indices if i + 1 < len(word_durations)]
+
+        if filler_word_durations:
+            average_pause_duration = np.mean(filler_word_durations)
+        else:
+            average_pause_duration = 0.0
+
+        return average_pause_duration
+    
+    average_pause_duration = calculate_average_pause_duration(word_timestamps, filler_word_indices, file_path)
+    print("Average pause duration after filler words:", average_pause_duration)
+
+    sentence_avg_pauses = calculate_average_pause_per_sentence(word_timestamps)
+
+    pause_after_filler_greater = [pause > average_pause_duration for pause in sentence_avg_pauses]
+
+    filler_words_in_sentences = [[] for _ in range(len(sentence_avg_pauses))]
+    for index in filler_word_indices:
+        sentence_index = 0
+        while index >= len(doc[: index + 1]):
+            index -= len(doc[: index + 1])
+            sentence_index += 1
+        filler_words_in_sentences[sentence_index].append(doc[index].text)
+
+    print("\nResults:")
+    for i, avg_pause in enumerate(sentence_avg_pauses):
+        print("Sentence {}: Average pause: {:.2f} seconds".format(i + 1, avg_pause))
+    print("Average pause in Each sentence:", ", ".join(map(str, sentence_avg_pauses)))
+    print("Pause after Filler word:", ", ".join(map(str, pause_after_filler_greater)))
+    filler_words = []
+    for words in filler_words_in_sentences:
+        filler_words.extend(words)
+    print("Filler word: Yes" if any(pause_after_filler_greater) else "Filler word: No")
+    print("Filler words:", ", ".join(filler_words))
+
+    return {}
+
+

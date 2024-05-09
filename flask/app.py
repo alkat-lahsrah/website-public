@@ -30,8 +30,8 @@ def analyze_video():
         return jsonify({"error": str(error)}), 500
 
     # Process the video
-    text = transcribe_video(download_path)
-    text_results = nlpTasks(text)
+    text,segments = transcribe_video(download_path)
+    text_results = nlpTasks(text,segments,download_path)
     logging.info(f"Video transcription and NLP results: {text_results}")
     
     return jsonify({"message": "Video processed successfully", "results": text_results})
